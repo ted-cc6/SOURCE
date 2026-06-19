@@ -294,9 +294,10 @@ class CostProjectionEngine:
 
     def run_simulation(
         self,
-        n_simulations: int            = 1000,
-        overrides:     Optional[dict] = None,
-        random_seed:   Optional[int]  = None,
+        n_simulations:      int                      = 1000,
+        overrides:          Optional[dict]           = None,
+        population_scalers: Optional[dict[str, float]] = None,
+        random_seed:        Optional[int]            = None,
     ) -> dict:
         """
         Run the vectorised Monte Carlo simulation.
@@ -381,6 +382,15 @@ class CostProjectionEngine:
 
         # ── Step B: load population time-series ──────────────────────────
         df     = self._load_timeseries()
+
+        # ── Step B2: apply population scalers (intervention faking) ──────
+        # Operate on a copy so the module-level cache is never mutated.
+        if population_scalers:
+            df = df.copy()
+            for col, scaler in population_scalers.items():
+                if col in df.columns:
+                    df[col] = df[col] * float(scaler)
+
         M      = len(df)
         months = df.index.strftime('%Y-%m-%d').tolist()
 
@@ -441,7 +451,8 @@ class CostProjectionEngine:
             'n_cost_lines':      K,
             'time_range':        f"{months[0]} → {months[-1]}",
             'runtime_s':         runtime,
-            'overrides_applied': overrides is not None,
+            'overrides_applied':          overrides is not None,
+            'population_scalers_applied': population_scalers or {},
             'cost_lines_active': [
                 {
                     'domain':            p['domain'],

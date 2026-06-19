@@ -18,6 +18,7 @@ import sys
 from contextlib import asynccontextmanager
 from typing import Any, Optional
 
+import httpx
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -40,6 +41,27 @@ DATA_DIR            = os.path.join(_HERE, "synthetic_data")
 DEFAULT_SIMULATIONS = 1_000
 MAX_SIMULATIONS     = 10_000   # cap to protect the server under load
 BASELINE_SEED       = 42       # reproducible baseline used for caching
+LM_STUDIO_URL       = "http://127.0.0.1:1234/v1/chat/completions"
+
+# Synthetic demographic burden splits — applied post-simulation to produce
+# equity_distribution in every API response.  Percentages are derived from:
+#   Income: SAMHSA NSDUH 2022 (OUD prevalence by household income quintile)
+#   Race:   CDC WONDER overdose mortality + BJS drug-offense arrest data
+SYNTHETIC_DEMOGRAPHICS: dict[str, dict[str, float]] = {
+    "income_bracket": {
+        "below_30k":   0.45,   # lowest quintile bears ~45% of total burden
+        "30k_to_75k":  0.35,
+        "above_75k":   0.20,
+    },
+    "race_ethnicity": {
+        "white_non_hispanic":    0.52,   # historically highest raw OUD count
+        "black_non_hispanic":    0.18,   # fastest-rising overdose rate (fentanyl era)
+        "hispanic":              0.18,
+        "american_indian_ak":    0.05,   # disproportionate per-capita burden
+        "asian_pacific":         0.03,
+        "other_multiracial":     0.04,
+    },
+}
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -191,6 +213,20 @@ class SimulationRequest(BaseModel):
         default=None,
         description="Nested cost-parameter overrides. See schema description above.",
     )
+    population_scalers: Optional[dict[str, float]] = Field(
+        default=None,
+        description=(
+            "Multiply individual population count columns by a float multiplier "
+            "before the Monte Carlo run, simulating policy interventions. "
+            "Keys must be valid count columns from state_timeseries.csv. "
+            "Valid keys: er_visit_overdose_count | inpatient_rehab_count | "
+            "outpatient_mat_count | police_arrest_count | incarceration_count | "
+            "lost_productivity_count | foster_care_risk_count. "
+            "Example — model a 20%% MOUD expansion + 15%% productivity gain: "
+            '{"outpatient_mat_count": 1.20, "lost_productivity_count": 0.85}'
+        ),
+        examples=[{"outpatient_mat_count": 1.20, "lost_productivity_count": 0.85}],
+    )
     random_seed: Optional[int] = Field(
         default=None,
         description=(
@@ -218,6 +254,70 @@ class SimulationRequest(BaseModel):
                     engine_ovr[domain][metric] = patch
 
         return engine_ovr if engine_ovr else None
+
+
+class SummaryRequest(BaseModel):
+    """
+    Request body for POST /generate_summary.
+
+    Designed to accept the JSON output from POST /simulate directly —
+    pipe the simulate response straight into this endpoint without reshaping.
+    Only the four fields below are read; all other simulate keys are ignored.
+
+    Quickstart
+    ----------
+    1. Call POST /simulate and capture the response JSON.
+    2. POST that same JSON body to POST /generate_summary.
+    3. Receive {"executive_summary": "..."}.
+    """
+    total_cost_p50: float = Field(
+        description="Median cumulative total cost in USD (summary.total_cost_p50).",
+    )
+    domain_shares_pct: dict[str, float] = Field(
+        description="Per-domain share of median total cost (summary.domain_shares_pct).",
+    )
+    equity_distribution: dict[str, dict[str, float]] = Field(
+        description="Demographic cost breakdown injected by /simulate (equity_distribution).",
+    )
+    population_scalers_applied: dict[str, float] = Field(
+        default_factory=dict,
+        description=(
+            "Population scalers used in this run (metadata.population_scalers_applied). "
+            "Empty dict means baseline — no intervention."
+        ),
+    )
+
+
+class PersonaRequest(BaseModel):
+    """
+    Request body for POST /generate_persona.
+
+    The frontend sends the domain and demographic context it wants to
+    zoom in on; the endpoint returns a 150-word hypothetical case study.
+    """
+    domain: str = Field(
+        description=(
+            "Cost domain to focus the story on. "
+            "Examples: 'Child Welfare', 'Justice', 'Economic', 'Healthcare'."
+        ),
+        examples=["Child Welfare"],
+    )
+    income_bracket: str = Field(
+        description=(
+            "Income bracket of the hypothetical individual or family. "
+            "Examples: 'Below $30k', '$30k to $75k', 'Above $75k'."
+        ),
+        examples=["Below $30k"],
+    )
+    intervention_applied: Optional[str] = Field(
+        default=None,
+        description=(
+            "Policy context active during this simulation run. "
+            "Pass None or omit for baseline. "
+            "Examples: 'Expanded MAT Access', 'Increased Naloxone Distribution'."
+        ),
+        examples=["Expanded MAT Access"],
+    )
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -312,6 +412,7 @@ def simulate(request: SimulationRequest):
         result = engine.run_simulation(
             n_simulations=request.n_simulations,
             overrides=request.to_engine_overrides(),
+            population_scalers=request.population_scalers,
             random_seed=request.random_seed,
         )
     except ValueError as exc:
@@ -322,7 +423,216 @@ def simulate(request: SimulationRequest):
             detail=f"Simulation failed: {exc}",
         )
 
+    # Inject equity distribution — multiply median total cost by each demographic
+    # share so Phase 2 AI summaries can comment on disproportionate burden.
+    total_p50 = result["summary"]["total_cost_p50"]
+    result["equity_distribution"] = {
+        category: {
+            group: round(total_p50 * share, 0)
+            for group, share in splits.items()
+        }
+        for category, splits in SYNTHETIC_DEMOGRAPHICS.items()
+    }
+
     return JSONResponse(content=result)
+
+
+@app.post(
+    "/generate_summary",
+    tags=["AI"],
+    summary="Generate an AI executive summary from simulation results",
+    response_description='{"executive_summary": "<3-sentence natural language summary>"}',
+)
+async def generate_summary(request: SummaryRequest):
+    """
+    Sends simulation metrics to the local **LM Studio** server
+    (`http://127.0.0.1:1234`) and returns a 3-sentence executive summary
+    suitable for a county health director.
+
+    **Prerequisites:** LM Studio must be running with a model loaded and its
+    local server enabled (LM Studio → Local Server → Start Server).
+
+    **Typical flow:**
+    1. `POST /simulate` → capture full response JSON.
+    2. `POST /generate_summary` with that same JSON body.
+    3. Display `executive_summary` in the dashboard narrative panel.
+
+    **Error codes:**
+    - `503` — LM Studio server not reachable (not running / wrong port).
+    - `504` — Model did not respond within 30 seconds.
+    - `502` — LM Studio returned an unexpected response shape.
+    """
+    # ── Build scalar strings for the prompt ────────────────────────────
+
+    def _fmt(v: float) -> str:
+        if abs(v) >= 1e12:
+            return f"${v / 1e12:.2f} trillion"
+        if abs(v) >= 1e9:
+            return f"${v / 1e9:.2f} billion"
+        return f"${v:,.0f}"
+
+    cost_str = _fmt(request.total_cost_p50)
+
+    top_domain     = max(request.domain_shares_pct, key=request.domain_shares_pct.get)
+    top_domain_pct = request.domain_shares_pct[top_domain]
+    domain_str     = f"{top_domain.replace('_', ' ').title()} ({top_domain_pct:.1f}% of total)"
+
+    if request.population_scalers_applied:
+        policy_str = "; ".join(
+            f"{col.replace('_count', '').replace('_', ' ')} scaled to {mult:.2f}×"
+            for col, mult in request.population_scalers_applied.items()
+        )
+    else:
+        policy_str = "Baseline — no intervention applied"
+
+    income = request.equity_distribution.get("income_bracket", {})
+    if income:
+        top_bracket      = max(income, key=income.get)
+        bracket_label    = top_bracket.replace("_", " ")
+        bracket_str      = f"{bracket_label} households ({_fmt(income[top_bracket])})"
+    else:
+        bracket_str = "unknown"
+
+    prompt = (
+        "You are an expert public health policy analyst. "
+        "Review the following simulation data for Opioid Use Disorder costs "
+        "over a 33-year horizon (1999–2032). "
+        f"Median Total Cost: {cost_str}. "
+        f"Highest Cost Domain: {domain_str}. "
+        f"Policy Applied: {policy_str}. "
+        f"Most Impacted Income Bracket: {bracket_str}. "
+        "Write a strict 3-sentence executive summary for a county health director "
+        "explaining the financial and social impact of this specific scenario. "
+        "Be precise with dollar figures and domain names."
+    )
+
+    # ── Call LM Studio (OpenAI-compatible endpoint) ─────────────────────
+    payload = {
+        "model":       "local-model",   # LM Studio uses whatever is loaded
+        "messages":    [{"role": "user", "content": prompt}],
+        "temperature": 0.7,
+        "max_tokens":  350,
+        "stream":      False,
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            llm_resp = await client.post(LM_STUDIO_URL, json=payload)
+            llm_resp.raise_for_status()
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                f"Cannot reach LM Studio at {LM_STUDIO_URL}. "
+                "Open LM Studio → Local Server tab → click Start Server."
+            ),
+        )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=504,
+            detail="LM Studio did not respond within 30 s. Try a smaller/faster model.",
+        )
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                f"LM Studio returned HTTP {exc.response.status_code}: "
+                f"{exc.response.text[:300]}"
+            ),
+        )
+
+    try:
+        text = llm_resp.json()["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError) as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Unexpected response shape from LM Studio: {exc}",
+        )
+
+    return {"executive_summary": text}
+
+
+@app.post(
+    "/generate_persona",
+    tags=["AI"],
+    summary="Generate a hypothetical 150-word personal case study",
+    response_description='{"persona_narrative": "<150-word human story>"}',
+)
+async def generate_persona(request: PersonaRequest):
+    """
+    Sends demographic and domain context to the local **LM Studio** server
+    and returns a ~150-word hypothetical case study about an individual or
+    family navigating OUD costs in that specific situation.
+
+    **Prerequisites:** LM Studio must be running with a model loaded
+    (LM Studio → Local Server → Start Server).
+
+    **Typical flow:**
+    1. User selects a domain tile and income bracket in the dashboard.
+    2. Frontend POSTs `{"domain": "...", "income_bracket": "...", "intervention_applied": "..."}`.
+    3. Display `persona_narrative` in the "Human Cost" panel.
+
+    **Error codes:**
+    - `503` — LM Studio server not reachable.
+    - `504` — Model did not respond within 30 seconds.
+    - `502` — LM Studio returned an unexpected response shape.
+    """
+    intervention_str = request.intervention_applied or "None"
+
+    prompt = (
+        "You are a compassionate public health narrative writer. "
+        f"Write a realistic, 150-word hypothetical case study about an individual "
+        f"or family in the {request.income_bracket} bracket navigating the "
+        f"{request.domain} system due to untreated Opioid Use Disorder. "
+        f"Policy context: {intervention_str}. "
+        "Focus on the compounding social and financial friction they experience. "
+        "Keep the tone grounded, empathetic, and objective. "
+        "Do not be overly melodramatic. Do not use bullet points."
+    )
+
+    payload = {
+        "model":       "local-model",
+        "messages":    [{"role": "user", "content": prompt}],
+        "temperature": 0.8,
+        "max_tokens":  400,
+        "stream":      False,
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            llm_resp = await client.post(LM_STUDIO_URL, json=payload)
+            llm_resp.raise_for_status()
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                f"Cannot reach LM Studio at {LM_STUDIO_URL}. "
+                "Open LM Studio → Local Server tab → click Start Server."
+            ),
+        )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=504,
+            detail="LM Studio did not respond within 30 s. Try a smaller/faster model.",
+        )
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                f"LM Studio returned HTTP {exc.response.status_code}: "
+                f"{exc.response.text[:300]}"
+            ),
+        )
+
+    try:
+        text = llm_resp.json()["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError) as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Unexpected response shape from LM Studio: {exc}",
+        )
+
+    return {"persona_narrative": text}
 
 
 # ──────────────────────────────────────────────────────────────────────
