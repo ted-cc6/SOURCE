@@ -515,8 +515,13 @@ async def generate_summary(request: SummaryRequest):
         "stream":      False,
     }
 
+    # connect: fail fast if LM Studio is not running at all.
+    # read: reasoning models can spend 60–300 s generating hidden thinking
+    #       before emitting a single output token — the read phase must wait.
+    _timeout = httpx.Timeout(connect=10.0, read=300.0, write=10.0, pool=10.0)
+
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=_timeout) as client:
             llm_resp = await client.post(LM_STUDIO_URL, json=payload)
             llm_resp.raise_for_status()
     except httpx.ConnectError:
@@ -530,7 +535,7 @@ async def generate_summary(request: SummaryRequest):
     except httpx.TimeoutException:
         raise HTTPException(
             status_code=504,
-            detail="LM Studio did not respond within 30 s. Try a smaller/faster model.",
+            detail="LM Studio did not respond within 300 s. Try a smaller/faster model.",
         )
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
@@ -598,8 +603,10 @@ async def generate_persona(request: PersonaRequest):
         "stream":      False,
     }
 
+    _timeout = httpx.Timeout(connect=10.0, read=300.0, write=10.0, pool=10.0)
+
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=_timeout) as client:
             llm_resp = await client.post(LM_STUDIO_URL, json=payload)
             llm_resp.raise_for_status()
     except httpx.ConnectError:
@@ -613,7 +620,7 @@ async def generate_persona(request: PersonaRequest):
     except httpx.TimeoutException:
         raise HTTPException(
             status_code=504,
-            detail="LM Studio did not respond within 30 s. Try a smaller/faster model.",
+            detail="LM Studio did not respond within 300 s. Try a smaller/faster model.",
         )
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
