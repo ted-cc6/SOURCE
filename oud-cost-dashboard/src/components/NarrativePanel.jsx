@@ -1,6 +1,7 @@
 // src/components/NarrativePanel.jsx
 import { useState } from 'react';
 import { postGenerateSummary, postGeneratePersona } from '../api/client.js';
+import InfoTip from './InfoTip.jsx';
 
 const DOMAIN_OPTIONS = ['Healthcare', 'Justice', 'Economic', 'Child Welfare'];
 const INCOME_OPTIONS = ['Below $30k', '$30k to $75k', 'Above $75k'];
@@ -9,10 +10,16 @@ export default function NarrativePanel({ result }) {
   return (
     <section className="section" id="narrative">
       <div className="panel-heading">
-        <h2>Narrative</h2>
+        <h2>Narrative 
+          <InfoTip>
+            <p>The section translates abstraction into real world context. Use these tools to generate actionable policy briefings and understand the localized, human impact of your selected interventions. </p>
+            <p><b>Generate executive summary:</b> Give immediate, data backed insights to share with policy makers and communities.</p>
+            <p><b>Case study generator:</b> Translate the intervention into the lived experience of a single family in your community. </p>
+          </InfoTip>
+        </h2>
         <span className="eyebrow">Requires a local LM Studio server</span>
       </div>
-      <div className="grid-two">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <ExecutiveSummaryCard result={result} />
         <PersonaCard />
       </div>

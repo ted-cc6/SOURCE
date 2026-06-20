@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { formatCostShort, formatCostFull, formatMonthLabel } from '../utils/format.js';
+import InfoTip from './InfoTip.jsx';
 
 const DOMAIN_TABS = [
   { key: 'total', label: 'Total', color: '#a23b2e' },
@@ -69,7 +70,12 @@ export default function CostChart({ result }) {
   return (
     <section className="section" id="trajectory">
       <div className="panel-heading">
-        <h2>Cumulative cost trajectory</h2>
+        <h2>Cumulative cost trajectory 
+          <InfoTip>
+            <p>This chart displays cumulative costs, meaning each point on the line is the total running sum of all expenses added up from 1999 to that specific date. It is not an annual budget. Instead, it visualizes how costs continuously layer on top of each other and snowball over time if no action is taken.</p>
+            <p>The solid center line tracks the median path across all simulations. Because forecasting decades into the future involves unpredictability, the lighter shaded area surrounding the line represents our 95% range of uncertainty. This shows the best case and worst case cost trajectories based on statistical volatility.</p>
+          </InfoTip>
+        </h2>
         <div className="domain-tabs">
           {DOMAIN_TABS.map((t) => (
             <button

@@ -1,5 +1,6 @@
 // src/components/ScenarioPanel.jsx
 import { useState } from 'react';
+import InfoTip from './InfoTip.jsx';
 
 // Mirrors the valid population_scalers keys documented in main.py's
 // SimulationRequest. Label/sub copy describes the lever in plain terms.
@@ -50,7 +51,17 @@ export default function ScenarioPanel({ onRun, running }) {
   return (
     <section className="section" id="scenario">
       <div className="panel-heading">
-        <h2>Model an intervention</h2>
+        <h2>Model an intervention 
+          <InfoTip>
+            <p>Use this panel to adjust the simulation input variables to check how different policy interventions would alter long term financial and social costs.</p>
+            <p>Each slider represents a real world domain affected by Opioid Use Disorder. The multiplier on the right alters the baseline trend:</p>
+            
+            <p><b>×1.00 (Default):</b> Represents the current baseline. No policy changes have been made.</p>
+            <p><b>Under 1.00 (Decrease):</b> Simulates a reduction in events. For example, setting 'ER overdose visits' to ×0.80 models a harm reduction program that successfully prevents 20% of expected emergency room visits.</p>
+            <p><b>Over 1.00 (Increase):</b> Simulates an expansion. For example, setting 'Outpatient MAT patients' to ×1.20 models a policy that successfully expands medication-assisted treatment capacity by 20%.</p>
+          
+          </InfoTip>
+        </h2>
         <span className="eyebrow">What-if levers</span>
       </div>
 
