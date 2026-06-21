@@ -54,7 +54,7 @@ function getBadgeCopy(region) {
   return 'National Defaults';
 }
 
-export default function ScenarioPanel({ onRun, running, selectedRegion, onRegionChange }) {
+export default function ScenarioPanel({ onRun, onBaselineRun, onReset, running, selectedRegion, onRegionChange }) {
   // Seed from the prop so first render matches the initial POST /simulate in App.
   const [scalers, setScalers] = useState(() => scalersForRegion(selectedRegion));
   const [nSimulations, setNSimulations] = useState(1000);
@@ -73,27 +73,24 @@ export default function ScenarioPanel({ onRun, running, selectedRegion, onRegion
   }
 
   // Switching region: snap sliders to the new baseline, notify the parent
-  // (so GeographyMap updates), and immediately re-run the simulation.
+  // (so GeographyMap updates), and re-run as a baseline fetch so both
+  // baselineTrajectory and activeTrajectory are updated in App.
   function handleRegionChange(region) {
     const newScalers = scalersForRegion(region);
     setScalers(newScalers);
     onRegionChange(region);
-    onRun({
+    onBaselineRun({
       n_simulations: nSimulations,
       random_seed: seed,
       population_scalers: changedScalers(newScalers),
     });
   }
 
-  // Reset snaps back to the currently active region's defaults, not to 1.00.
+  // Reset snaps sliders back to the current region's defaults and tells App
+  // to restore activeTrajectory from the locked baselineTrajectory -- no API call.
   function handleReset() {
-    const baseline = scalersForRegion(selectedRegion);
-    setScalers(baseline);
-    onRun({
-      n_simulations: nSimulations,
-      random_seed: seed,
-      population_scalers: changedScalers(baseline),
-    });
+    setScalers(scalersForRegion(selectedRegion));
+    onReset();
   }
 
   return (

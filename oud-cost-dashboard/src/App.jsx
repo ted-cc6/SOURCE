@@ -32,6 +32,9 @@ const TABS = [
 export default function App() {
   const [result, setResult] = useState(null);
   const [prevResult, setPrevResult] = useState(null);
+  const [baselineResult, setBaselineResult] = useState(null);
+  const [baselineTrajectory, setBaselineTrajectory] = useState(null);
+  const [activeTrajectory, setActiveTrajectory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('about');
@@ -47,6 +50,10 @@ export default function App() {
     () => filterResultByYears(prevResult, yearRange[0], yearRange[1]),
     [prevResult, yearRange]
   );
+  const filteredBaselineResult = useMemo(
+    () => filterResultByYears(baselineResult, yearRange[0], yearRange[1]),
+    [baselineResult, yearRange]
+  );
 
   // On first paint, POST /simulate with the initial region's scalers so the
   // Hero number immediately reflects Indiana's reality, not the neutral baseline.
@@ -59,7 +66,12 @@ export default function App() {
           random_seed: 42,
           population_scalers: apiScalersForRegion('Indiana'),
         });
-        if (mounted) setResult(initial);
+        if (mounted) {
+          setResult(initial);
+          setBaselineResult(initial);
+          setBaselineTrajectory(initial.trajectory ?? null);
+          setActiveTrajectory(initial.trajectory ?? null);
+        }
       } catch (err) {
         if (mounted) setError(err.message);
       } finally {
@@ -69,12 +81,14 @@ export default function App() {
     return () => { mounted = false; };
   }, []);
 
+  // Called by "Run scenario" -- updates only the active trajectory.
   const handleRun = useCallback(async (params) => {
     setLoading(true);
     setError(null);
     try {
       const res = await postSimulate(params);
       setResult((prev) => { setPrevResult(prev); return res; });
+      setActiveTrajectory(res.trajectory ?? null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -82,9 +96,37 @@ export default function App() {
     }
   }, []);
 
+  // Called on region change -- locks a new baseline and resets active to match.
+  const handleBaselineRun = useCallback(async (params) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await postSimulate(params);
+      setResult((prev) => { setPrevResult(prev); return res; });
+      setBaselineResult(res);
+      setBaselineTrajectory(res.trajectory ?? null);
+      setActiveTrajectory(res.trajectory ?? null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Called by "Reset to baseline" -- no API call; restores locked baseline.
+  const handleReset = useCallback(() => {
+    setResult((prev) => { setPrevResult(prev); return baselineResult; });
+    setActiveTrajectory(baselineTrajectory);
+  }, [baselineResult, baselineTrajectory]);
+
   return (
     <div className="app-shell">
-      <Hero result={filteredResult} prevResult={filteredPrevResult} loading={loading} />
+      <Hero
+        result={filteredResult}
+        prevResult={filteredPrevResult}
+        baselineResult={filteredBaselineResult}
+        loading={loading}
+      />
 
       {error && (
         <div className="section" style={{ paddingBottom: 0 }}>
@@ -96,6 +138,8 @@ export default function App() {
         <aside className="sidebar">
           <ScenarioPanel
             onRun={handleRun}
+            onBaselineRun={handleBaselineRun}
+            onReset={handleReset}
             running={loading}
             selectedRegion={selectedRegion}
             onRegionChange={setSelectedRegion}
@@ -138,7 +182,12 @@ export default function App() {
             </div>
           )}
 
-          {activeTab === 'trajectory' && <CostChart result={filteredResult} />}
+          {activeTab === 'trajectory' && (
+            <CostChart
+              result={filteredResult}
+              baselineTrajectory={filteredBaselineResult?.trajectory ?? null}
+            />
+          )}
 
           {activeTab === 'breakdown' && (
             <>

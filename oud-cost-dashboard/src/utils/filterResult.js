@@ -47,6 +47,24 @@ export function filterResultByYears(result, startYear, endYear) {
     );
   }
 
+  // Slice trajectory to the same window and re-baseline cumulative values
+  // so they start at 0 at startYear, matching sliceAndOffset behaviour above.
+  let filteredTrajectory;
+  if (result.trajectory) {
+    const prev = startIdx > 0 ? result.trajectory[startIdx - 1] : null;
+    filteredTrajectory = result.trajectory.slice(startIdx, endIdx + 1).map((row) => {
+      if (!prev) return row;
+      return {
+        date:         row.date,
+        total:        row.total        - prev.total,
+        healthcare:   row.healthcare   - prev.healthcare,
+        justice:      row.justice      - prev.justice,
+        economic:     row.economic     - prev.economic,
+        childWelfare: row.childWelfare - prev.childWelfare,
+      };
+    });
+  }
+
   return {
     ...result,
     months: filteredMonths,
@@ -54,5 +72,6 @@ export function filterResultByYears(result, startYear, endYear) {
     summary: { ...summary, total_cost_p50, total_cost_p025, total_cost_p975, domain_shares_pct },
     equity_distribution: filteredEquity,
     metadata: { ...metadata, time_range: `${startYear} → ${endYear}` },
+    ...(filteredTrajectory !== undefined ? { trajectory: filteredTrajectory } : {}),
   };
 }

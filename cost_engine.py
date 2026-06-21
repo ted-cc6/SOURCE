@@ -425,6 +425,19 @@ class CostProjectionEngine:
         for dom in self._DOMAINS:
             cumulative_out[dom] = self._pct(cum_domain[dom])
 
+        # ── Step H+: row-per-month trajectory (p50 medians) for chart layers
+        trajectory = [
+            {
+                "date":         months[i][:7],
+                "total":        int(cumulative_out["total"]["p50"][i]),
+                "healthcare":   int(cumulative_out["healthcare"]["p50"][i]),
+                "justice":      int(cumulative_out["justice"]["p50"][i]),
+                "economic":     int(cumulative_out["economic"]["p50"][i]),
+                "childWelfare": int(cumulative_out["child_welfare"]["p50"][i]),
+            }
+            for i in range(M)
+        ]
+
         # ── Step I: summary scalars (end-of-horizon values) ──────────────
         final_total = cum_total[:, -1]
         p025_f, p50_f, p975_f = np.percentile(final_total, [2.5, 50.0, 97.5])
@@ -470,6 +483,7 @@ class CostProjectionEngine:
             'months':     months,
             'cumulative': cumulative_out,
             'summary':    summary,
+            'trajectory': trajectory,
         }
 
 
