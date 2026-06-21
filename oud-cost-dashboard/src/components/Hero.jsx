@@ -18,7 +18,7 @@ export default function Hero({ result, prevResult, loading }) {
     <header className="hero">
       <div className="hero__inner">
         <div className="eyebrow eyebrow--on-ink">
-          Cost of Doing Nothing &middot; Opioid Use Disorder &middot;{' '}
+          Cost of Doing Nothing &middot; Opioid Epidemic &middot;{' '}
           {result?.metadata?.time_range ?? '1999 → 2032'}
         </div>
         <h1 className="hero__title">
