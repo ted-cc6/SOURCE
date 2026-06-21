@@ -352,6 +352,6 @@ if __name__ == "__main__":
     print(df.tail(6).to_string())
 
     # Export for use by downstream Monte Carlo engine
-    out_path = os.path.join("synthetic_data", "state_timeseries.csv")
+    out_path = os.path.join("datasets_cleaned", "state_timeseries.csv")
     df.to_csv(out_path)
     print(f"\nExported monthly time-series → {out_path}")

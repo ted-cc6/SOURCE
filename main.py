@@ -42,7 +42,7 @@ from ai_routes import init_gemini, router as ai_router
 # Configuration constants
 # ──────────────────────────────────────────────────────────────────────
 
-DATA_DIR            = os.path.join(_HERE, "synthetic_data")
+DATA_DIR            = os.path.join(_HERE, "datasets_cleaned")
 DEFAULT_SIMULATIONS = 1_000
 MAX_SIMULATIONS     = 10_000   # cap to protect the server under load
 BASELINE_SEED       = 42       # reproducible baseline used for caching

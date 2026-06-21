@@ -1,0 +1,147 @@
+File Manifest for ICPSR 30701
+
+United States. Bureau of Justice Statistics. Federal Justice Statistics
+Program: Paired-Agency Linked Files, 1994-2023. ICPSR30701-v14. Ann Arbor,
+MI: Inter-university Consortium for Political and Social Research
+[distributor], 2025-12-09. http://doi.org/10.3886/ICPSR30701.v14
+
+Details on the version history can be found below the file listings.
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-descriptioncitation.pdf       -       -         -       2025-12-09  -
+
+    30701-related_literature.txt        -       -         -       daily       -
+
+    30701-manifest.txt                  -       -         -       daily       -
+
+
+DS0001 EO Matters OUT SAF and Marshals IN SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0001-Codebook-ICPSR.epub      -       -         -       2025-12-09  90dc96b73b5382e23fccaa0b6048d998
+
+    30701-0001-Codebook-ICPSR.pdf       -       -         -       2025-12-09  507943a40f17c0ff324b1d06eb498439
+
+
+DS0002 EO Cases IN SAF and AO Cases IN SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0002-Codebook-ICPSR.epub      -       -         -       2025-12-09  70630a72db103184df9b7b5e067f104b
+
+    30701-0002-Codebook-ICPSR.pdf       -       -         -       2025-12-09  4629b17d628f619021379dc08bf4b0c4
+
+
+DS0003 EO Cases OUT EO Magistrate Matters OUT SAFs and AO OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0003-Codebook-ICPSR.epub      -       -         -       2025-12-09  a3ec159f8524758c115c9b02f5a7dc79
+
+    30701-0003-Codebook-ICPSR.pdf       -       -         -       2025-12-09  05f55e15171cbfd039b812bb3deee79b
+
+
+DS0004 AO Cases OUT SAF and USSC OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0004-Codebook-ICPSR.epub      -       -         -       2025-12-09  32cb4d35a3926151e99a36df5612c99e
+
+    30701-0004-Codebook-ICPSR.pdf       -       -         -       2025-12-09  385a17191c98fe358614ec94b2ab9c3f
+
+
+DS0005 BOP IN SAF and USSC OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0005-Codebook-ICPSR.epub      -       -         -       2025-12-09  5898e86177a737959e1a1e5a88babff2
+
+    30701-0005-Codebook-ICPSR.pdf       -       -         -       2025-12-09  ff420f708a9cfd6df4e97f3d0905e418
+
+
+DS0006 AO Cases IN SAF and AO Cases OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0006-Codebook-ICPSR.epub      -       -         -       2025-12-09  32b331969f4ad8a7b6602bbc7722f094
+
+    30701-0006-Codebook-ICPSR.pdf       -       -         -       2025-12-09  5245ae3b8e09019aa21fa2ed1ff1b9e0
+
+
+DS0007 EO Cases IN SAF and EO Cases Out SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0007-Codebook-ICPSR.epub      -       -         -       2025-12-09  b7a3b39b10015a9bf259a9cd5ad0d563
+
+    30701-0007-Codebook-ICPSR.pdf       -       -         -       2025-12-09  ad97c8efab78e08d9f550ff9e3503639
+
+
+DS0008 EO Matters OUT SAF and EO Cases IN SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0008-Codebook-ICPSR.epub      -       -         -       2025-12-09  b95af1e884b23ad1f42d8d0f8a4a36c0
+
+    30701-0008-Codebook-ICPSR.pdf       -       -         -       2025-12-09  5e3c325645d52aa7ee1d65adec581012
+
+
+DS0009 EO Matters OUT SAF and EO Cases OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0009-Codebook-ICPSR.epub      -       -         -       2025-12-09  528571ab67e7cae716893263bec3f7a6
+
+    30701-0009-Codebook-ICPSR.pdf       -       -         -       2025-12-09  3fc1be2cf5363f86886417a0c3d2ba70
+
+
+DS0010 EO Matters IN SAF and EO Matters OUT SAF
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    30701-0010-Codebook-ICPSR.epub      -       -         -       2025-12-09  5a81724d39e453f52ddec302c6a91429
+
+    30701-0010-Codebook-ICPSR.pdf       -       -         -       2025-12-09  0aeb54fced4bb5bf7237ec675cc65d00
+
+
+Version History
+
+2025-12-09 The data files were updated to include information for 2023.
+2024-05-28 The data files were updated to include information for 2022.
+2023-03-30 The data files were updated to include information for 2020 and
+2021.  2022-10-31 The data files were updated to include information for
+2019.  2022-06-23 The data files were updated to include information for
+2017 and 2018.  2019-12-19 The data files were updated to include
+information for 2015 and 2016.  Removed geographic information from title.
+2018-04-17 The data files were updated to include information for 2014.
+2017-06-16 An incompatibility in the sequence numbers between the archived
+USSC data and the AOSC dyads involving an extra non-identifying zero in the
+USSC dyad sequence number was found. Dataset 4, AO Cases OUT SAF and USSC
+OUT SAF, has been corrected and updated as a result.  2016-09-19 The
+JWSCORE and MAGFLAG variables, present in previous dyad linking files, have
+been removed to ease use of the linking files. In addition, the data files
+were updated to include information for 2013.  2015-02-05 The data files
+were updated to include information from 2012.  2014-06-16 The data files
+were updated to include information for 2011.  2013-05-17 The codebook was
+updated to reflect new data files.  2013-05-17 The collection was updated
+to replace datasets 1-9 and add dataset 10. All datasets contain
+information through 2010.  2011-11-11 The study was updated to replace
+dataset 1 and add datasets 6, 7, 8 and 9.  2011-08-08 Data parts 2, 3 and 4
+were updated to include new values for the variable JWSCORE.  2011-07-22
+2011-07-22 The data files were updated to include information for 2009.

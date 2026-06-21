@@ -38,7 +38,7 @@ class CostProjectionEngine:
 
     Quick-start
     -----------
-    engine = CostProjectionEngine("synthetic_data/")
+    engine = CostProjectionEngine("datasets_cleaned/")
 
     # Baseline run
     result = engine.run_simulation(n_simulations=1000)
@@ -488,7 +488,7 @@ def _fmt_trillions(v: float) -> str:
 if __name__ == '__main__':
     import sys
 
-    DATA_DIR = os.path.join(os.path.dirname(__file__), 'synthetic_data')
+    DATA_DIR = os.path.join(os.path.dirname(__file__), 'datasets_cleaned')
 
     print("=" * 64)
     print("  Cost of Doing Nothing Simulator — Monte Carlo Engine Test")

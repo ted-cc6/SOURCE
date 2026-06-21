@@ -19,7 +19,7 @@ Distributions:
 import os
 import json
 
-OUTPUT_DIR = "synthetic_data"
+OUTPUT_DIR = "datasets_cleaned"
 
 # ---------------------------------------------------------------------------
 # 1. HEALTHCARE COSTS  (simulating MEPS / AHRQ / SAMHSA data)

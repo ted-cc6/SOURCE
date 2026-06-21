@@ -1,0 +1,104 @@
+Bibliography
+National Prisoner Statistics, [United States], 1978-2022
+
+This bibliography includes published and unpublished works that are related 
+to ICPSR study 38871. It includes works that are based on primary
+or secondary analysis of the data, or which describe or critique those
+data or the collection methodology. 
+
+If you publish a work or know of other works that are based on these data,
+please send the complete citation and name of the ICPSR study used to:
+icpsrbibliography@umich.edu
+
+
+1. Buehler, Emily D.; Kluckow, Rich, "Correctional Populations in the
+United States, 2022." Statistical Tables. NCJ 308699, Washington, DC:
+Bureau of Justice Statistics, May 2024.
+Abstract: https://bjs.ojp.gov/library/publications/correctional-populations-united-states-2022-statistical-tables
+Full text PDF: https://bjs.ojp.gov/document/cpus22st.pdf
+
+2. Byers, Jason S.; Shay, Laine P., "The electoral connection, state
+attorneys general, and the dynamics of incarceration rates." Journal of
+Public Policy. in press 2025,. DOI: 10.1017/S0143814X25100706
+Abstract: https://bjs.ojp.gov/library/publications/correctional-populations-united-states-2022-statistical-tables
+Full text PDF: https://bjs.ojp.gov/document/cpus22st.pdf
+
+3. Carson, E.A.; Kluckow, Rich, "Prisoners in 2022." Statistical Tables.
+NCJ 307149, Washington, DC: Bureau of Justice Statistics, Nov 2023.
+Abstract: https://bjs.ojp.gov/library/publications/prisoners-2022-statistical-tables
+Full text PDF: https://bjs.ojp.gov/document/p22st.pdf
+This report is the 97th in a series that began in 1926 and provides data on
+persons in state and federal prisons. The report provides counts of
+prisoners under the jurisdiction of state and federal correctional
+authorities in 2022 and includes findings on admissions, releases, and
+imprisonment rates. The report describes demographic and offense
+characteristics of state and federal prisoners. It also provides data on
+prisoners held under military jurisdiction. Findings are based on BJS’s
+National Prisoner Statistics program.
+
+4. Cate, Sarah D., "The perils of carceral austerity: How cost-cutting
+undermines prison safety and fuels privatization." Social Sciences. 2025,
+14, (11),. DOI: 10.3390/socsci14110642
+Abstract: https://bjs.ojp.gov/library/publications/prisoners-2022-statistical-tables
+Full text PDF: https://bjs.ojp.gov/document/p22st.pdf
+This report is the 97th in a series that began in 1926 and provides data on
+persons in state and federal prisons. The report provides counts of
+prisoners under the jurisdiction of state and federal correctional
+authorities in 2022 and includes findings on admissions, releases, and
+imprisonment rates. The report describes demographic and offense
+characteristics of state and federal prisoners. It also provides data on
+prisoners held under military jurisdiction. Findings are based on BJS’s
+National Prisoner Statistics program.
+
+5. Clegg, John, "Slavery's carceral legacy." American Journal of Sociology.
+May 2025, 130, (6), 1351 - 1393. DOI: 10.1086/733783
+Abstract: https://bjs.ojp.gov/library/publications/prisoners-2022-statistical-tables
+Full text PDF: https://bjs.ojp.gov/document/p22st.pdf
+This report is the 97th in a series that began in 1926 and provides data on
+persons in state and federal prisons. The report provides counts of
+prisoners under the jurisdiction of state and federal correctional
+authorities in 2022 and includes findings on admissions, releases, and
+imprisonment rates. The report describes demographic and offense
+characteristics of state and federal prisoners. It also provides data on
+prisoners held under military jurisdiction. Findings are based on BJS’s
+National Prisoner Statistics program.
+
+6. Council of State Governments Justice Center, "50 States, 1 Goal:
+Examining State-Level Recidivism Trends in the Second Chance Act Era." New
+York, NY: Council of State Governments Justice Center, Apr 2024.
+Full text PDF: https://csgjusticecenter.org/wp-content/uploads/2024/04/50-States-1-Goal_For-PDF_with508report.pdf
+
+7. Papp, Jordan; Mueller-Smith, Michael, "Benchmarking the 2024 Q4 Vintage
+of the Criminal Justice Administrative Record System's Data
+Infrastructure." Ann Arbor, MI: Criminal Justice Administrative Records
+System, 2024.
+Full text PDF: https://cjars.org/wp-content/uploads/CJARS_Benchmarking_Report_2024q4.pdf
+
+8. Papp, Jordan; Mueller-Smith, Michael, "Benchmarking the 2025 Q1 Vintage
+of the Criminal Justice Administrative Records System's Data
+Infrastructure." Ann Arbor, MI: Criminal Justice Administrative Records
+System, 2025.
+Full text PDF: https://cjars.org/benchmarking-report-download/
+
+9. Santa Maria, Andrea J., "Progressive Resiliency in Scotland: A
+Transformative Mixed Methods Study for Prevention of White Nationalism."
+Dissertation, Chicago School of Professional Psychology, 2024.
+Full text PDF: https://cjars.org/benchmarking-report-download/
+
+10. Siegel, Michael, "Universal background checks, permit requirements, and
+firearm homicide rates." JAMA Network Open. Aug 1, 2024, 7, (8),. DOI:
+10.1001/jamanetworkopen.2024.25025
+Full text PDF: https://cjars.org/benchmarking-report-download/
+
+11. Stimson, Charles D.; Smith, Zack, "The Myth of Mass Incarceration."
+Legal Memorandum No. 353. Washington, DC: Heritage Foundation, May 29,
+2024.
+Full text: https://www.heritage.org/crime-and-justice/report/the-myth-mass-incarceration
+Full text PDF: https://www.heritage.org/sites/default/files/2024-05/LM353.pdf
+
+12. Veazie, Stephanie; Hailu, Elleni M.; Riddell, Corinne A., "Using latent
+profile analysis to classify US states into typologies of structural
+racism." Social Science and Medicine. Feb 2025, 366,. DOI:
+10.1016/j.socscimed.2025.117698
+Full text: https://www.heritage.org/crime-and-justice/report/the-myth-mass-incarceration
+Full text PDF: https://www.heritage.org/sites/default/files/2024-05/LM353.pdf

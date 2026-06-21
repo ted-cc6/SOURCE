@@ -1,0 +1,33 @@
+{
+  "_metadata": {
+    "domain": "Healthcare",
+    "currency": "USD",
+    "reference_year": 2022,
+    "primary_sources": [
+      "AHRQ Medical Expenditure Panel Survey (MEPS)",
+      "SAMHSA National Survey of Substance Abuse Treatment Services (N-SSATS)",
+      "Florence et al. (2021) - Updated Economic Burden of OUD, MMWR"
+    ]
+  },
+  "er_visit_overdose": {
+    "mean_cost": 3200,
+    "std_dev": 1100,
+    "distribution_type": "log-normal",
+    "unit": "USD per visit",
+    "source_rationale": "AHRQ/HCUP data reports mean hospital costs for opioid overdose ER visits at $2,700-$3,800; log-normal reflects right skew from ICU admissions and multi-day holds driving the upper tail."
+  },
+  "inpatient_rehab_30_days": {
+    "mean_cost": 19500,
+    "std_dev": 6500,
+    "distribution_type": "log-normal",
+    "unit": "USD per 30-day episode",
+    "source_rationale": "SAMHSA N-SSATS and NIDA report residential 30-day treatment running $14,000-$27,000 depending on facility type and state; log-normal captures the wide spread between public and private facilities."
+  },
+  "outpatient_medication_annual": {
+    "mean_cost": 6800,
+    "std_dev": 2000,
+    "distribution_type": "normal",
+    "unit": "USD per patient per year",
+    "source_rationale": "Methadone maintenance averages $6,500-$9,000/year and buprenorphine office-based treatment $4,500-$7,500/year per SAMHSA; normal distribution reflects relatively standardized dosing protocols and state-regulated fee schedules."
+  }
+}

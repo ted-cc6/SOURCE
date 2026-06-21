@@ -1,0 +1,240 @@
+Bibliography
+Federal Justice Statistics Program: Paired-Agency Linked Files, 1994-2023
+
+This bibliography includes published and unpublished works that are related 
+to ICPSR study 30701. It includes works that are based on primary
+or secondary analysis of the data, or which describe or critique those
+data or the collection methodology. 
+
+If you publish a work or know of other works that are based on these data,
+please send the complete citation and name of the ICPSR study used to:
+icpsrbibliography@umich.edu
+
+
+1. Judge, Shana M., "The Demographic Characteristics of Federal Human
+Trafficking Defendants: Who Are the Offenders?." Presented at the Human
+Trafficking and Social Justice Institute, International Human Trafficking
+and Social Justice Conference, Sep 21, 2022.
+Full text: https://www.traffickingconference.com/2022-abstracts/2022/9/21/child-sex-trafficking-a-healthcare-team-response-to-prevention-and-evaluation-e3c47-all62-e8fgd-npr2a
+
+2. Judge, Shana M.; Doherty, Yuka, "The demographic characteristics of
+federal trafficking defendants: Who are the offenders?." Journal of Human
+Trafficking. Oct 2022, 39, (4),. DOI: 10.1080/23322705.2022.2104572
+Full text: https://www.traffickingconference.com/2022-abstracts/2022/9/21/child-sex-trafficking-a-healthcare-team-response-to-prevention-and-evaluation-e3c47-all62-e8fgd-npr2a
+
+3. Judge, Shana M.; Dole, Jenna L., "Charging sex traffickers under federal
+law: What dispositions should we expect when applying theories on
+prosecutorial decision-making?." Journal of Empirical Legal Studies. Sep
+2022, 19, (3), 677 - 715. DOI: 10.1111/jels.12326
+Full text: https://www.traffickingconference.com/2022-abstracts/2022/9/21/child-sex-trafficking-a-healthcare-team-response-to-prevention-and-evaluation-e3c47-all62-e8fgd-npr2a
+
+4. Kim, KiDeuk, "Organizational Efficiency and Early Disposition Programs
+in Federal Courts." Executive Summary. NCJ 244387, Washington, DC: The
+Urban Institute, Dec 2013. 2010-IJ-CX-0013
+Abstract: https://www.ncjrs.gov/App/Publications/abstract.aspx?ID=266468
+Full text PDF: https://www.ncjrs.gov/pdffiles1/nij/grants/244387.pdf
+'Fast-track' programs in Federal sentencing allow a prosecutor to offer a
+below-guidelines sentence in exchange for a defendantâs prompt guilty
+plea and waiver of certain pretrial and post-conviction rights. These
+programs have been authorized for use in some, but not all, Federal
+districts. They are used mostly for immigration offenses. The findings of
+the current study indicate that fast-track programs have reduced case
+processing time and increased sentencing disparity; however, the extent of
+the impact of fast-track programs on these outcomes has been modest. Fast-
+track participants who waived the due process right to appeal in exchange
+for a reduced sentence did not receive as much of a reduction in sentence
+length as anticipated. The estimated reduction in case-processing time was
+also moderate, producing modest savings in resources. This study advises
+that more attention should be given to how fast-track programs are
+implemented, since there is significant variation in the use of these
+programs across districts. Also, although immigration offenses have become
+the largest offense category in the Federal justice system, little is known
+about how immigration cases are processed. The report recommends that the
+Federal Government require higher standards of accountability, efficiency,
+and equity in the processing of immigration cases. In addition, research
+should be conducted on the process of prosecutorial and judicial
+decisionmaking in Federal courts, as well as the evaluation of the cost-
+effectiveness of sentencing options in fast-track cases. This study used
+Federal Justice Statistics Program data from fiscal year 2006 to fiscal
+year 2009. 4 exhibits
+
+5. Kim, KiDeuk, "Organizational Efficiency and Early Disposition Programs
+in Federal Courts." Final Report. NCJ 244386, Washington, DC: The Urban
+Institute, Dec 2013. 2010-IJ-CX-0013
+Abstract: https://www.ncjrs.gov/App/Publications/abstract.aspx?ID=266467
+Full text PDF: https://www.ncjrs.gov/pdffiles1/nij/grants/244386.pdf
+'Fast-track' programs in Federal sentencing allow a prosecutor to offer a
+below-guidelines sentence in exchange for a defendant's prompt guilty plea
+and waiver of certain pretrial and post-conviction rights. These programs
+have been authorized for use in some, but not all, Federal districts. They
+are used mostly for immigration offenses. The findings of the current study
+indicate that fast-track programs have reduced case processing time and
+increased sentencing disparity; however, the extent of the impact of fast-
+track programs on these outcomes has been modest. Fast-track participants
+who waived the due process right to appeal in exchange for a reduced
+sentence did not receive as much of a reduction in sentence length as
+anticipated. The estimated reduction in case- processing time was also
+moderate, producing modest savings in resources. This study advises that
+more attention should be given to how fast-track programs are implemented,
+since there is significant variation in the use of these programs across
+districts. Also, although immigration offenses have become the largest
+offense category in the Federal justice system, little is known about how
+immigration cases are processed. The report recommends that the Federal
+Government require higher standards of accountability, efficiency, and
+equity in the processing of immigration cases. In addition, research should
+be conducted on the process of prosecutorial and judicial decisionmaking in
+Federal courts, as well as the evaluation of the cost-effectiveness of
+sentencing options in fast-track cases. 13 exhibits, 79 references, and
+appended approved fast-track programs involving immigration offenses,
+descriptive summary of analytic samples, and alternative modeling
+
+6. Motivans, Mark, "Federal Justice Statistics 2009." Statistical Tables.
+NCJ 233464, Washington, DC: United States Department of Justice, Bureau of
+Justice Statistics, Dec 2011.
+Full text: http://www.bjs.gov/content/pub/ascii/fjs09st.txt
+Full text PDF: http://www.bjs.gov/content/pub/pdf/fjs09st.pdf
+Describes criminal case processing in the federal justice system, including
+arrest and booking through sentencing and corrections. These statistical
+tables present the number of suspects arrested and booked by the U.S.
+Marshals Service, suspects in matters investigated and prosecuted by U.S.
+attorneys, defendants adjudicated and sentenced in U.S. district court, and
+characteristics of federal prisoners and offenders under federal
+supervision.
+
+7. Motivans, Mark, "Federal Justice Statistics 2010 - Statistical Tables."
+NCJ 239914, Washington, DC: United States Department of Justice, Office of
+Justice Programs, Bureau of Justice Statistics, Dec 2013.
+Abstract: http://www.bjs.gov/index.cfm?ty=pbdetail&iid=4862
+Full text: http://www.bjs.gov/content/pub/ascii/fjs10st.txt
+Full text PDF: http://www.bjs.gov/content/pub/pdf/fjs10st.pdf
+Describes criminal case processing in the federal justice system, including
+arrest and booking through sentencing and corrections. These statistical
+tables present the number of suspects arrested and booked by the U.S.
+Marshals Service, suspects in matters investigated and prosecuted by U.S.
+attorneys, defendants adjudicated and sentenced in U.S. district court, and
+characteristics of federal prisoners and offenders under federal
+supervision. The Bureau of Justice Statistics' Federal Justice Statistics
+Program (FJSP) collects information on suspects and defendants, annual
+workload, activities, and outcomes of federal criminal cases. The FJSP
+integrates data from the U.S. Marshals Service (USMS), Drug Enforcement
+Administration (DEA), Executive Office for U.S. Attorneys (EOUSA),
+Administrative Office of the U.S. Courts (AOUSC), U.S. Sentencing
+Commission (USSC), and the Federal Bureau of Prisons (BOP).
+
+8. Motivans, Mark, "Federal Justice Statistics 2013 - Statistical Tables."
+NCJ 249150, Washington, DC: United States Department of Justice, Office of
+Justice Programs, Bureau of Justice Statistics, Mar 2017.
+Full text PDF: https://www.bjs.gov/content/pub/pdf/fjs13st.pdf?utm_source=juststats&utm_medium=email&utm_content=fjs13_report_pdf&utm_campaign=FJS13&ed2f26df2d9c416fbddddd2330a778c6=nrphbbxxuu-nrupounhx
+
+9. Motivans, Mark, "Federal Justice Statistics, 2009." Bulletin. NCJ
+234184, Washington, DC: United States Department of Justice, Office of
+Justice Programs, Bureau of Justice Statistics, Dec 2011.
+Abstract: http://www.bjs.gov/index.cfm?ty=pbdetail&iid=2208
+Full text PDF: http://www.bjs.gov/content/pub/pdf/fjs09.pdf
+Describes the annual activity, workloads, and outcomes associated with the
+federal criminal justice system from arrest to imprisonment, using data
+from Drug Enforcement Administration, U.S. Marshals Service, Executive
+Office for U.S. Attorneys, Administrative Office of the U.S. Courts, U.S.
+Sentencing Commission, and the Federal Bureau of Prisons. Tables and text
+describe a surge in federal justice activity, especially in the area of
+immigration enforcement. The bulletin also examines cases and their legal
+outcomes by type of legal representation, including private counsel, public
+defenders and appointed counsel. The report provides the most recent
+available data on sentences imposed and their lengths by type of offense.
+
+10. Motivans, Mark, "Federal Justice Statistics, 2010." Bulletin. NCJ
+239913, Washington, DC: United States Department of Justice, Office of
+Justice Programs, Bureau of Justice Statistics, Dec 2013.
+Abstract: http://www.bjs.gov/index.cfm?ty=pbdetail&iid=4861
+Full text: http://www.bjs.gov/content/pub/ascii/fjs10.txt
+Full text PDF: http://www.bjs.gov/content/pub/pdf/fjs10.pdf
+Describes the annual activity, workloads, and outcomes associated with the
+federal criminal justice system from arrest to imprisonment, using data
+from the U.S. Marshals Service (USMS), Drug Enforcement Administration
+(DEA), Executive Office for U.S. Attorneys (EOUSA), Administrative Office
+of the U.S. Courts (AOUSC), and the Federal Bureau of Prisons (BOP). Tables
+and text describe arrests and investigations by law enforcement agency and
+growth rates by type of offense and federal judicial district. This report
+examines trends in drug arrests by the DEA. It also provides the number of
+offenders returning to federal prison within three years of release and
+includes the most recently available data on sentences imposed and their
+lengths by type of offense.
+
+11. Motivans, Mark, "Federal Justice Statistics, 2011 - Statistical
+Tables." NCJ 248469, Washington, DC: United States Department of Justice,
+Office of Justice Programs, Bureau of Justice Statistics, Jan 2015.
+Abstract: http://www.bjs.gov/index.cfm?ty=pbdetail&iid=5196&utm_source=juststats-012215&utm_medium=email&utm_content=%20Federal%20Justice%20Statistics%202011%20-%20Statistical%20Tables&utm_campaign=juststats
+Full text: http://www.bjs.gov/content/pub/ascii/fjs11st.txt
+Full text PDF: http://www.bjs.gov/content/pub/pdf/fjs11st.pdf
+Provides annual data on workload, activities, and outcomes associated with
+federal criminal cases. Information is acquired on all aspects of
+processing in the federal justice system, including the number of persons
+investigated, prosecuted, convicted, incarcerated, sentenced to probation,
+released pretrial, and under parole or other supervision; initial
+prosecution decisions, referrals to magistrates, court dispositions,
+sentencing outcomes, sentence length, and time served. The program collects
+data from the Executive Office for U.S. Attorneys (EOUSA), the Pretrial
+Services Agency (PSA), the Administrative Office of the U.S. Courts (AO),
+the U.S. Sentencing Commission (USSC), and the Federal Bureau of Prisons
+(BOP).
+
+12. Motivans, Mark, "Federal Justice Statistics, 2019." Bulletin. NCJ
+301158, Washington, DC: Bureau of Justice Statistics, Oct 2021. fjs19
+Full text PDF: https://bjs.ojp.gov/content/pub/pdf/fjs19.pdf
+
+13. Motivans, Mark, "Federal Justice Statistics, 2021." Bulletin. NCJ
+305127, Washington, DC: Bureau of Justice Statistics, Dec 2022.
+Full text PDF: https://bjs.ojp.gov/sites/g/files/xyckuh236/files/media/document/fjs21.pdf
+
+14. Motivans, Mark A., "Federal Justice Statistics, 2023." Bulletin. NCJ
+309946, Washington, DC: Bureau of Justice Statistics, Mar 2025.
+Full text PDF: https://bjs.ojp.gov/document/fjs23.pdf
+
+15. Redner-Vera, Erica, "Examining the Treatment of American Indian
+Defendants in United States Federal Courts." Dissertation, Arizona State
+University, 2018.
+Full text PDF: https://bjs.ojp.gov/document/fjs23.pdf
+
+16. Redner-Vera, Erica; Wang, Xia, "Examining cumulative disadvantage
+against American Indian defendants in federal courts." Justice Quarterly.
+2023, 40, (2), 263 - 290. DOI: 10.1080/07418825.2022.2060283
+Full text PDF: https://bjs.ojp.gov/document/fjs23.pdf
+
+17. Rehavi, M. Marit; Starr, Sonja B., "Racial Disparity in Federal
+Criminal Charging and Its Sentencing Consequences." Program in Law and
+Economics Working Paper Series. 12-002, Ann Arbor, MI: University of
+Michigan Law School, Empirical Legal Studies Center, May 2012. DOI:
+10.2139/ssrn.1985377
+Abstract: http://ssrn.com/abstract=1985377
+
+18. Rehavi, M. Marit; Starr, Sonja B., "Racial Disparity in Federal
+Criminal Sentences." Dec 2013..
+Full text PDF: http://www.economics.ubc.ca/files/2014/01/pdf_paper_marit-rehavi-draft-racial-disparity-federal.pdf
+
+19. Rehavi, M.M.; Starr, Sonja B., "Racial disparity in federal criminal
+sentences." Journal of Political Economy. Dec 2014, 122, (6), 1320 - 1354.
+DOI: 10.1086/677255
+Full text PDF: http://www.economics.ubc.ca/files/2014/01/pdf_paper_marit-rehavi-draft-racial-disparity-federal.pdf
+
+20. Starr, Sonja B., "Estimating Gender Disparities in Federal Criminal
+Cases." University of Michigan Law and Economics Working Paper 57. 12-018,
+Ann Arbor, MI: University of Michigan Program in Law and Economics, Aug
+2012.
+Full text: http://law.bepress.com/umichlwps-empirical/57
+
+21. Starr, Sonja B.; Rehavi, Marit, "Mandatory sentencing and racial
+disparity: Assessing the role of prosecutors and the effects of Booker."
+Yale Law Journal. Oct 2013, 123, (1),.
+Full text: http://law.bepress.com/umichlwps-empirical/57
+
+22. Yang, Crystal S., "Resource Constraints and the Criminal Justice
+System: Evidence from Judicial Vacancies." Harvard Law School John M. Olin
+Center Discussion Paper No. 820. Cambridge, MA: Harvard Law School, Apr
+2015. DOI: 10.2139/ssrn.2594019
+Abstract: https://ssrn.com/abstract=2594019
+
+23. Yang, Crystal S., "Resource constraints and the criminal justice
+system: Evidence from judicial vacancies." American Economic Journal:
+Economic Policy. Nov 2016, 8, (4), 289 - 332. DOI: 10.1257/pol.20150150
+Abstract: https://www.aeaweb.org/articles?id=10.1257/pol.20150150
+Full text PDF: https://pubs.aeaweb.org/doi/pdfplus/10.1257/pol.20150150

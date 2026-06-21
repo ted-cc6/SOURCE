@@ -1,0 +1,33 @@
+{
+  "_metadata": {
+    "domain": "Criminal Justice",
+    "currency": "USD",
+    "reference_year": 2022,
+    "primary_sources": [
+      "Bureau of Justice Statistics (BJS) - Prisoners Series",
+      "RAND Drug Policy Research Center - Cost of Crime estimates",
+      "Vera Institute of Justice - Price of Prisons (2020 update)"
+    ]
+  },
+  "police_arrest": {
+    "mean_cost": 1800,
+    "std_dev": 500,
+    "distribution_type": "normal",
+    "unit": "USD per arrest event",
+    "source_rationale": "RAND and BJS studies estimate per-arrest costs (officer time, booking, processing) at $1,400-$2,500 for drug offenses; normal distribution reflects fairly uniform municipal police department cost structures."
+  },
+  "court_processing": {
+    "mean_cost": 11500,
+    "std_dev": 4000,
+    "distribution_type": "log-normal",
+    "unit": "USD per case adjudicated",
+    "source_rationale": "Full adjudication costs including prosecution, public defense, and judge/court time run $8,000-$18,000 per BJS and RAND for drug offenses; log-normal captures the long tail from complex multi-hearing cases versus simple guilty pleas."
+  },
+  "incarceration_annual": {
+    "mean_cost": 39000,
+    "std_dev": 9000,
+    "distribution_type": "normal",
+    "unit": "USD per inmate per year",
+    "source_rationale": "Vera Institute's 2020 update reports state prison annual costs averaging $35,000-$45,000 nationally (range: $25k in low-cost states to $60k+ in CA/NY); normal distribution reflects relatively symmetric variation around a state-set per diem rate."
+  }
+}
