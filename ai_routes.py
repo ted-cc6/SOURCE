@@ -11,13 +11,12 @@ Provides five endpoints:
 Call init_gemini() from your app lifespan AFTER load_dotenv() so the
 environment variable is available before the SDK is configured.
 """
-
+from google import genai
 import json
 import os
 from typing import Any, Optional
 
 import chromadb
-import google.generativeai as genai
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
@@ -25,7 +24,7 @@ from pydantic import BaseModel, Field
 # Module-level state -- populated by init_gemini() during app startup
 # ---------------------------------------------------------------------------
 
-_model: Optional[genai.GenerativeModel] = None
+_client: Optional[genai.Client] = None
 
 # ChromaDB path constants -- resolved relative to this file so they work
 # regardless of where uvicorn is launched from.
@@ -40,25 +39,24 @@ def init_gemini() -> None:
     Raises RuntimeError if the key is absent so the app refuses to start
     rather than failing silently on the first request.
     """
-    global _model
+    global _client
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError(
             "GEMINI_API_KEY is not set. "
             "Populate the .env file in the backend root and restart the server."
         )
-    genai.configure(api_key=api_key)
-    _model = genai.GenerativeModel("gemini-1.5-flash")
-    print("[startup] Gemini client ready (gemini-1.5-flash).")
+    _client = genai.Client(api_key=api_key)
+    print("[startup] Gemini client ready (gemini-2.5-flash).")
 
 
-def _get_model() -> genai.GenerativeModel:
-    if _model is None:
+def _get_client() -> genai.Client:
+    if _client is None:
         raise HTTPException(
             status_code=503,
             detail="Gemini client is not initialised. The server may still be starting.",
         )
-    return _model
+    return _client
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +196,7 @@ def _fmt_cost(v: float) -> str:
 async def _generate(
     prompt: str,
     temperature: float = 0.7,
-    max_output_tokens: int = 500,
+    max_output_tokens: int = 8192,
     response_mime_type: Optional[str] = None,
 ) -> str:
     """
@@ -209,10 +207,8 @@ async def _generate(
     syntactically valid JSON without markdown fences, so _strip_fences() becomes
     a no-op safety net rather than a required step.
     """
-    model = _get_model()
+    client = _get_client()
 
-    # Build config kwargs dynamically so older SDK versions that do not yet
-    # recognise response_mime_type still receive a valid GenerationConfig.
     config_kwargs: dict = {
         "temperature": temperature,
         "max_output_tokens": max_output_tokens,
@@ -220,10 +216,14 @@ async def _generate(
     if response_mime_type:
         config_kwargs["response_mime_type"] = response_mime_type
 
-    config = genai.types.GenerationConfig(**config_kwargs)
+    config = genai.types.GenerateContentConfig(**config_kwargs)
 
     try:
-        response = await model.generate_content_async(prompt, generation_config=config)
+        response = await client.aio.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=config,
+        )
         text = response.text  # raises ValueError when all candidates are blocked
         return text.strip()
     except HTTPException:
@@ -270,10 +270,6 @@ async def generate_summary(request: SummaryRequest):
     """
     cost_str = _fmt_cost(request.total_cost_p50)
 
-    top_domain = max(request.domain_shares_pct, key=request.domain_shares_pct.get)
-    top_pct = request.domain_shares_pct[top_domain]
-    domain_str = f"{top_domain.replace('_', ' ').title()} ({top_pct:.1f}% of total)"
-
     if request.population_scalers_applied:
         policy_str = "; ".join(
             f"{col.replace('_count', '').replace('_', ' ')} scaled to {mult:.2f}x"
@@ -292,20 +288,40 @@ async def generate_summary(request: SummaryRequest):
     else:
         bracket_str = "unknown"
 
-    prompt = (
-        "You are an expert public health policy analyst. "
-        "Review the following simulation data for Opioid Use Disorder costs "
-        "over a 33-year horizon (1999 to 2032). "
-        f"Median Total Cost: {cost_str}. "
-        f"Highest Cost Domain: {domain_str}. "
-        f"Policy Applied: {policy_str}. "
-        f"Most Impacted Income Bracket: {bracket_str}. "
-        "Write a strict 3-sentence executive summary for a county health director "
-        "explaining the financial and social impact of this specific scenario. "
-        "Be precise with dollar figures and domain names."
+    all_domains = "; ".join(
+        f"{k.replace('_', ' ').title()} {v:.1f}%"
+        for k, v in sorted(request.domain_shares_pct.items(), key=lambda x: -x[1])
     )
 
-    text = await _generate(prompt, temperature=0.7, max_output_tokens=350)
+    prompt = (
+        "You are a senior public health policy analyst and health economist specializing "
+        "in the opioid crisis. You have been given Monte Carlo simulation data for "
+        "Indiana's Opioid Use Disorder (OUD) costs over a 33-year horizon (1999 to 2032).\n\n"
+        "SIMULATION DATA:\n"
+        f"- Median Total Projected Cost: {cost_str}\n"
+        f"- Cost Distribution by Domain: {all_domains}\n"
+        f"- Policy Scenario Applied: {policy_str}\n"
+        f"- Most Impacted Income Bracket: {bracket_str}\n\n"
+        "Write a comprehensive 4-paragraph analysis report for a county health director. "
+        "Each paragraph must be substantive (at least 80 words). Do not use bullet points.\n\n"
+        "Paragraph 1 - Executive Overview: State the total projected cost, contextualize "
+        "its scale against Indiana's annual state budget, and characterize the overall "
+        "severity of the crisis.\n\n"
+        "Paragraph 2 - Domain Cost Analysis: Break down each cost domain by its share "
+        "of the total burden. Explain the economic mechanisms driving the largest domains "
+        "and what they imply for where resources are being consumed.\n\n"
+        "Paragraph 3 - Equity and Social Impact: Analyze the equity dimension. Explain "
+        "why the identified income bracket bears a disproportionate burden, and describe "
+        "the compounding generational effects on families, children, and workforce participation.\n\n"
+        "Paragraph 4 - Policy Implications and Urgency: Based on the policy scenario, "
+        "analyze what the data reveals about the cost of inaction versus intervention. "
+        "Identify the single highest-leverage domain where a dollar invested would yield "
+        "the greatest reduction in total projected cost.\n\n"
+        "Be precise with every dollar figure and domain name. Write in a professional, "
+        "authoritative tone appropriate for a state-level policy briefing."
+    )
+
+    text = await _generate(prompt, temperature=0.7, max_output_tokens=2048)
     return {"executive_summary": text}
 
 
@@ -322,17 +338,33 @@ async def generate_persona(request: PersonaRequest):
     intervention_str = request.intervention_applied or "None"
 
     prompt = (
-        "You are a compassionate public health narrative writer. "
-        f"Write a realistic, 150-word hypothetical case study about an individual "
-        f"or family in the {request.income_bracket} bracket navigating the "
-        f"{request.domain} system due to untreated Opioid Use Disorder. "
-        f"Policy context: {intervention_str}. "
-        "Focus on the compounding social and financial friction they experience. "
-        "Keep the tone grounded, empathetic, and objective. "
-        "Do not be melodramatic. Do not use bullet points."
+        "You are a compassionate public health narrative writer with deep expertise in "
+        "the social determinants of health and the economics of addiction.\n\n"
+        f"Write a detailed, realistic hypothetical case study (approximately 450 words) "
+        f"about an individual or family in the {request.income_bracket} income bracket "
+        f"navigating the {request.domain} system due to untreated Opioid Use Disorder. "
+        f"Policy context in effect: {intervention_str}.\n\n"
+        "Structure the case study in three clearly distinct sections:\n\n"
+        "Section 1 - Background (approx. 100 words): Establish who this person or family "
+        "is. Give them a realistic first name. Describe their employment history, housing "
+        "situation, family structure, and how OUD first entered their lives. Ground every "
+        "detail in the economic reality of their income bracket.\n\n"
+        "Section 2 - Crisis Cascade (approx. 220 words): Walk through the specific "
+        f"systems they encountered within the {request.domain} domain. Name the concrete "
+        "financial costs incurred at each stage -- by them, by their family, and by the "
+        "state. Show how each system interaction triggered the next, creating compounding "
+        "friction. Be specific: name dollar amounts, wait times, distances traveled, "
+        "children affected, jobs lost.\n\n"
+        "Section 3 - Current Reality (approx. 130 words): Describe their present "
+        "circumstances. If a policy intervention is active, show specific, measurable "
+        "evidence of changed trajectory. If this is a baseline scenario with no "
+        "intervention, show the ongoing and escalating cost of continued inaction -- "
+        "not just for this individual but for the broader community.\n\n"
+        "Keep the tone grounded, empathetic, and rigorously objective. "
+        "Avoid melodrama and vague generalities. Do not use bullet points."
     )
 
-    text = await _generate(prompt, temperature=0.8, max_output_tokens=400)
+    text = await _generate(prompt, temperature=0.8, max_output_tokens=1500)
     return {"persona_narrative": text}
 
 
@@ -455,24 +487,30 @@ async def draft_policy(request: PolicyDraftRequest):
         '"A formal bill title in the format: Resolution [3-digit number]: '
         'The [Descriptive Policy Name] Act",\n'
         '  "summary": '
-        '"Two formal paragraphs totaling 130 to 160 words. Paragraph one states the '
-        "legislative intent and problem scope. Paragraph two states the policy mechanism "
-        'and expected outcome. Separate paragraphs with a single newline character.",\n'
+        '"Three formal paragraphs totaling 250 to 320 words. Paragraph one states the '
+        "legislative intent, problem scope, and the specific OUD cost burden that compels "
+        "action (reference the simulation cost figure). Paragraph two states the policy "
+        "mechanism, the agencies responsible, and the implementation timeline. Paragraph "
+        "three states the expected measurable outcomes and the communities that will "
+        'benefit. Separate paragraphs with a single newline character.",\n'
         '  "provisions": [\n'
-        '    "3 to 4 strings. Each string is one specific, actionable policy execution '
-        "step naming the responsible agency, funding stream, or enforcement mechanism. "
-        'Begin each provision with a numbered label such as: Section 1."\n'
+        '    "5 to 6 strings. Each string is one specific, actionable policy execution '
+        "step naming the responsible agency, the funding stream or appropriation amount, "
+        "and the enforcement or accountability mechanism. Begin each provision with a "
+        'numbered label such as: Section 1."\n'
         "  ],\n"
         '  "fiscal_note": '
-        '"One formal sentence stating the estimated upfront appropriation and the '
-        'projected long-term economic return or net savings to the state."\n'
+        '"Two to three sentences. State the estimated upfront appropriation required in '
+        "Year 1, identify the primary funding sources (e.g., federal Medicaid match, "
+        "state general fund), and project the long-term economic return or net savings "
+        'to Indiana over a 10-year horizon based on the simulation data provided."\n'
         "}"
     )
 
     raw = await _generate(
         prompt,
         temperature=0.3,
-        max_output_tokens=1000,
+        max_output_tokens=8192,
         response_mime_type="application/json",
     )
 
@@ -560,11 +598,19 @@ async def project_impact(request: ImpactProjectionRequest):
         "Gemini JSON mode is active.\n\n"
         "The JSON object must contain EXACTLY these two keys and no others:\n"
         "{\n"
-        '  "narrative": "The 150-word success story (target word count: 145 to 160 words)",\n'
+        '  "narrative": '
+        '"A 400 to 450 word success story. The story must center on a specific named '
+        "individual or family in Indiana (invent a realistic first name and county). "
+        "Show a vivid BEFORE state (the hardship caused by untreated OUD -- financial "
+        "strain, family separation, job loss, system encounters). Then show a detailed "
+        "AFTER state (how a specific policy intervention changed their trajectory -- "
+        "name the program, the caseworker type, the measurable result). Reference at "
+        "least two concrete figures from the simulation data. End with a paragraph on "
+        'measurable community-level impact, not just individual relief.",\n'
         '  "key_themes": [\n'
-        '    "EXACTLY 3 short string tags summarizing the core themes, '
+        '    "EXACTLY 5 short string tags summarizing the core themes, '
         "written as title-case noun phrases (e.g., 'Family Stability', "
-        "'Workforce Re-entry', 'Treatment Access')\"\n"
+        "'Workforce Re-entry', 'Treatment Access', 'Child Welfare', 'Cost Reduction')\"\n"
         "  ]\n"
         "}"
     )
@@ -572,7 +618,7 @@ async def project_impact(request: ImpactProjectionRequest):
     raw = await _generate(
         prompt,
         temperature=0.65,
-        max_output_tokens=600,
+        max_output_tokens=2500,
         response_mime_type="application/json",
     )
 
@@ -586,8 +632,8 @@ async def project_impact(request: ImpactProjectionRequest):
         if not isinstance(data["key_themes"], list) or not data["key_themes"]:
             raise TypeError("key_themes must be a non-empty list")
 
-        # Trim to exactly 3 themes in case Gemini returns more despite instructions.
-        themes = data["key_themes"][:3]
+        # Trim to exactly 5 themes in case Gemini returns more despite instructions.
+        themes = data["key_themes"][:5]
 
         return ImpactProjectionResponse(
             narrative=data["narrative"],
