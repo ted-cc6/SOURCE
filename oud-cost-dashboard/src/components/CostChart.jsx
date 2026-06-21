@@ -64,8 +64,8 @@ export default function CostChart({ result }) {
     });
   }, [result, domain]);
 
-  // Sparse tick marks: aim for roughly a dozen labels across the horizon
-  const tickInterval = Math.max(1, Math.floor(data.length / 11));
+  // Sparse tick marks: aim for roughly 6 labels across the horizon
+  const tickInterval = Math.max(1, Math.floor(data.length / 6));
 
   return (
     <section className="section" id="trajectory">

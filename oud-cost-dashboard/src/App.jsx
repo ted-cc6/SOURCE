@@ -11,6 +11,7 @@ import InfoTip from './components/InfoTip.jsx';
 
 export default function App() {
   const [result, setResult] = useState(null);
+  const [prevResult, setPrevResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('about');
@@ -39,7 +40,7 @@ export default function App() {
     setError(null);
     try {
       const res = await postSimulate(params);
-      setResult(res);
+      setResult(prev => { setPrevResult(prev); return res; });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -49,7 +50,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Hero result={result} loading={loading} />
+      <Hero result={result} prevResult={prevResult} loading={loading} />
 
       {error && (
         <div className="section" style={{ paddingBottom: 0 }}>
@@ -114,10 +115,10 @@ export default function App() {
                 <span className="eyebrow">Median cost share by domain &amp; equity overlay</span>
               </div>
               <div className="card">
-                <DomainLedger result={result} />
+                <DomainLedger result={result} prevResult={prevResult} />
               </div>
               <div className="card" style={{ marginTop: '16px' }}>
-                <EquityBreakdown result={result} />
+                <EquityBreakdown result={result} prevResult={prevResult} />
               </div>
             </>
           )}

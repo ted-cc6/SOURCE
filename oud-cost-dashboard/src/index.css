@@ -83,6 +83,11 @@ a {
   border-top: 1px solid var(--rule);
 }
 
+#scenario.section {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
 .eyebrow {
   font-family: var(--font-display);
   font-size: 11px;
@@ -225,7 +230,7 @@ p {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 4px 10px;
-  padding: 11px 0;
+  padding: 6px 0;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -242,10 +247,10 @@ p {
 
 .ledger-row__sub {
   display: block;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 400;
   color: var(--muted-ink);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .ledger-row__value {
@@ -466,6 +471,32 @@ textarea {
   .sidebar {
     position: static;
   }
+}
+
+/* ───────────────────────── Delta badge ───────────────────────── */
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.delta--up {
+  color: var(--rust);
+  background: rgba(162, 59, 46, 0.1);
+}
+
+.delta--down {
+  color: var(--sage);
+  background: rgba(92, 122, 94, 0.1);
 }
 
 /* ───────────────────────── InfoTip ───────────────────────── */

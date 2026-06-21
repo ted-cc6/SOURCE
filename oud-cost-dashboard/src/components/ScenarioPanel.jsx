@@ -62,7 +62,6 @@ export default function ScenarioPanel({ onRun, running }) {
           
           </InfoTip>
         </h2>
-        <span className="eyebrow">What-if levers</span>
       </div>
 
       <div className="card">
@@ -90,6 +89,13 @@ export default function ScenarioPanel({ onRun, running }) {
         </div>
 
         <div className="btn-row" style={{ alignItems: 'flex-end' }}>
+          <button className="btn btn--primary" onClick={handleRun} disabled={running}>
+            {running ? 'Running…' : 'Run scenario'}
+          </button>
+          <button className="btn btn--ghost" onClick={handleReset} disabled={running}>
+            Reset
+          </button>
+          
           <div className="field">
             <label htmlFor="n-sims">Simulations</label>
             <select
@@ -117,13 +123,6 @@ export default function ScenarioPanel({ onRun, running }) {
               style={{ width: 100 }}
             />
           </div>
-
-          <button className="btn btn--primary" onClick={handleRun} disabled={running}>
-            {running ? 'Running…' : 'Run scenario'}
-          </button>
-          <button className="btn btn--ghost" onClick={handleReset} disabled={running}>
-            Reset to baseline
-          </button>
         </div>
       </div>
     </section>

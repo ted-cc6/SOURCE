@@ -3,8 +3,9 @@ import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 import { useCountUp } from '../hooks/useCountUp.js';
 import { formatCostShort, formatCostFull } from '../utils/format.js';
 import InfoTip from './InfoTip.jsx';
+import Delta from './Delta.jsx';
 
-export default function Hero({ result, loading }) {
+export default function Hero({ result, prevResult, loading }) {
   const total = result?.summary?.total_cost_p50 ?? null;
   const lo = result?.summary?.total_cost_p025 ?? null;
   const hi = result?.summary?.total_cost_p975 ?? null;
@@ -56,11 +57,15 @@ export default function Hero({ result, loading }) {
           <div className="hero__overlay">
             <p className="hero__total">
               {total != null ? formatCostFull(animatedTotal) : loading ? 'Loading…' : '—'}
+              <Delta current={total} previous={prevResult?.summary?.total_cost_p50} />
             </p>
             {lo != null && hi != null && (
               <p className="hero__range">
-                95% interval: <strong>{formatCostShort(lo)}</strong> to{' '}
+                95% interval: <strong>{formatCostShort(lo)}</strong>
+                <Delta current={lo} previous={prevResult?.summary?.total_cost_p025} />
+                {' '}to{' '}
                 <strong>{formatCostShort(hi)}</strong>
+                <Delta current={hi} previous={prevResult?.summary?.total_cost_p975} />
                 <InfoTip>To quantify the accuracy for future simulation, we used a realistic range based on our data and simulations. We are 95% confident that the true, real world cost will fall somewhere between these lower and upper bounds. It shows the best case and worst case scenarios if current trends hold.</InfoTip>
               </p>
             )}

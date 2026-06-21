@@ -1,6 +1,7 @@
 // src/components/EquityBreakdown.jsx
 import { useState } from 'react';
 import { formatCostShort } from '../utils/format.js';
+import Delta from './Delta.jsx';
 
 const CATEGORY_TABS = [
   { key: 'income_bracket', label: 'Income bracket' },
@@ -23,9 +24,10 @@ function prettyLabel(key) {
   return LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ');
 }
 
-export default function EquityBreakdown({ result }) {
+export default function EquityBreakdown({ result, prevResult }) {
   const [category, setCategory] = useState('income_bracket');
   const splits = result?.equity_distribution?.[category];
+  const prevSplits = prevResult?.equity_distribution?.[category];
 
   return (
     <div>
@@ -48,11 +50,15 @@ export default function EquityBreakdown({ result }) {
           .sort((a, b) => b[1] - a[1])
           .map(([key, dollars]) => {
             const max = Math.max(...Object.values(splits));
+            const prevDollars = prevSplits?.[key] ?? null;
             return (
               <div className="bar-row" key={key}>
                 <div className="bar-row__top">
                   <span className="bar-row__label">{prettyLabel(key)}</span>
-                  <span className="bar-row__value">{formatCostShort(dollars)}</span>
+                  <span className="bar-row__value">
+                    {formatCostShort(dollars)}
+                    <Delta current={dollars} previous={prevDollars} />
+                  </span>
                 </div>
                 <div className="bar-row__track">
                   <div
