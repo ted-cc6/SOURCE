@@ -473,6 +473,84 @@ textarea {
   }
 }
 
+/* ───────────────────────── Year range picker (dual slider) ───────────────────────── */
+
+.dual-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-text);
+  margin-bottom: 10px;
+}
+
+.dual-range {
+  position: relative;
+  height: 20px;  /* thumb clearance */
+}
+
+/* Colored track drawn as a pseudo-element so inputs can be transparent */
+.dual-range::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--rule)  var(--pct-start),
+    var(--rust)  var(--pct-start),
+    var(--rust)  var(--pct-end),
+    var(--rule)  var(--pct-end)
+  );
+  pointer-events: none;
+}
+
+.dual-range__input {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  pointer-events: none;
+  margin: 0;
+}
+
+.dual-range__input::-webkit-slider-runnable-track { background: transparent; }
+.dual-range__input::-moz-range-track             { background: transparent; }
+
+.dual-range__input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--rust);
+  border: 2px solid var(--paper-raised);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.dual-range__input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--rust);
+  border: 2px solid var(--paper-raised);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+  pointer-events: all;
+}
+
 /* ───────────────────────── Delta badge ───────────────────────── */
 
 .delta {

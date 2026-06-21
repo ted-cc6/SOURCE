@@ -1,13 +1,18 @@
 // src/App.jsx
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getBaseline, postSimulate } from './api/client.js';
 import Hero from './components/Hero.jsx';
 import ScenarioPanel from './components/ScenarioPanel.jsx';
+import YearRangePicker from './components/YearRangePicker.jsx';
 import CostChart from './components/CostChart.jsx';
 import DomainLedger from './components/DomainLedger.jsx';
 import EquityBreakdown from './components/EquityBreakdown.jsx';
 import NarrativePanel from './components/NarrativePanel.jsx';
 import InfoTip from './components/InfoTip.jsx';
+import { filterResultByYears } from './utils/filterResult.js';
+
+const MIN_YEAR = 1999;
+const MAX_YEAR = 2032;
 
 export default function App() {
   const [result, setResult] = useState(null);
@@ -15,6 +20,16 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('about');
+  const [yearRange, setYearRange] = useState([MIN_YEAR, MAX_YEAR]);
+
+  const filteredResult = useMemo(
+    () => filterResultByYears(result, yearRange[0], yearRange[1]),
+    [result, yearRange]
+  );
+  const filteredPrevResult = useMemo(
+    () => filterResultByYears(prevResult, yearRange[0], yearRange[1]),
+    [prevResult, yearRange]
+  );
 
   // Load the cached baseline on first paint — this is intentionally cheap
   // server-side (precomputed at startup), so the dashboard renders fast.
@@ -50,7 +65,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Hero result={result} prevResult={prevResult} loading={loading} />
+      <Hero result={filteredResult} prevResult={filteredPrevResult} loading={loading} />
 
       {error && (
         <div className="section" style={{ paddingBottom: 0 }}>
@@ -61,6 +76,13 @@ export default function App() {
       <div className="main-layout">
         <aside className="sidebar">
           <ScenarioPanel onRun={handleRun} running={loading} />
+          <YearRangePicker
+            startYear={yearRange[0]}
+            endYear={yearRange[1]}
+            minYear={MIN_YEAR}
+            maxYear={MAX_YEAR}
+            onChange={setYearRange}
+          />
         </aside>
 
         <div className="content-pane">
@@ -85,7 +107,7 @@ export default function App() {
             <div className="card about-panel">
               <h2>About This Simulator</h2>
               <p>This simulation represents the total financial and societal cost of Opioid Use Disorder (OUD) if we maintain the status quo and introduce no new policies. The timeline spans from 1999 to 2032, capturing both historical data and future projections to show exactly how these health, criminal justice, and economic costs snowball over time.</p>
-
+              <p>Cumulative cost means this figure is not just an annual budget, it is the total, compounding financial impact aggregated over the entire 1999 - 2032 period. Because predicting the future involves uncertainty, our forecasting model is a Monte Carlo simulation. We ran this exact 33 year timeline through our computer model 1,000 different times, injecting slight variations each time to account for real world unpredictability. The median is the middle ground outcome of all 1,000 simulated futures.</p>
               <h3>How It Works</h3>
               <p>[Placeholder: Explain the Monte Carlo simulation approach, what inputs drive it, and how confidence intervals are produced.]</p>
 
@@ -100,7 +122,7 @@ export default function App() {
             </div>
           )}
 
-          {activeTab === 'trajectory' && <CostChart result={result} />}
+          {activeTab === 'trajectory' && <CostChart result={filteredResult} />}
 
           {activeTab === 'breakdown' && (
             <>
@@ -115,15 +137,15 @@ export default function App() {
                 <span className="eyebrow">Median cost share by domain &amp; equity overlay</span>
               </div>
               <div className="card">
-                <DomainLedger result={result} prevResult={prevResult} />
+                <DomainLedger result={filteredResult} prevResult={filteredPrevResult} />
               </div>
               <div className="card" style={{ marginTop: '16px' }}>
-                <EquityBreakdown result={result} prevResult={prevResult} />
+                <EquityBreakdown result={filteredResult} prevResult={filteredPrevResult} />
               </div>
             </>
           )}
 
-          {activeTab === 'narrative' && <NarrativePanel result={result} />}
+          {activeTab === 'narrative' && <NarrativePanel result={filteredResult} />}
         </div>
       </div>
 

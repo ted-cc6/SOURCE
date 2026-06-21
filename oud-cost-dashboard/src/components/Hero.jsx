@@ -24,9 +24,7 @@ export default function Hero({ result, prevResult, loading }) {
         <h1 className="hero__title">
           Cumulative cost if current trends continue, median of{' '}
           {result?.metadata?.n_simulations?.toLocaleString() ?? '—'} Monte Carlo runs
-          <InfoTip>
-            Cumulative cost means this figure is not just an annual budget, it is the total, compounding financial impact aggregated over the entire 1999 - 2032 period. Because predicting the future involves uncertainty, our forecasting model is a Monte Carlo simulation. We ran this exact 33 year timeline through our computer model 1,000 different times, injecting slight variations each time to account for real world unpredictability. The median is the middle ground outcome of all 1,000 simulated futures.
-          </InfoTip>
+          
         </h1>
 
         <div className="hero__chart-wrap">
