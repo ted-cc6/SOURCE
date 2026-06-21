@@ -1,5 +1,9 @@
 /* src/index.css */
 
+/* Tailwind v4 — import only utilities (no preflight/base reset) so the
+   custom design-token system below remains in full control. */
+@import "tailwindcss/utilities";
+
 /* ───────────────────────── Design tokens ───────────────────────── */
 :root {
   /* Ink (dark) surfaces */
@@ -743,4 +747,314 @@ footer.app-footer {
   padding: 24px;
   font-size: 12px;
   color: var(--muted-ink);
+}
+
+/* ───────────────────────── Spinner ───────────────────────── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--rule);
+  border-top-color: var(--rust);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* ───────────────────────── Policy Architect tab ───────────────────────── */
+
+.pa-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pa-section-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 4px;
+}
+
+.pa-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+@media (max-width: 860px) {
+  .pa-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pa-precedent-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pa-precedent-card__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink-text);
+}
+
+.pa-precedent-card__summary {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted-ink);
+}
+
+.pa-impact-badge {
+  margin-top: auto;
+  padding: 8px 10px;
+  background: rgba(92, 122, 94, 0.08);
+  border-left: 3px solid var(--sage);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 12px;
+  color: var(--sage);
+  line-height: 1.45;
+}
+
+.pa-impact-badge__label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.pa-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.pa-chip-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-right: 4px;
+}
+
+.pa-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .pa-form-grid { grid-template-columns: 1fr; }
+}
+
+.pa-bill {
+  border: 2px solid var(--rule);
+  border-top: 4px solid var(--slate);
+  border-radius: var(--radius);
+  background: #fafaf8;
+  padding: 24px 28px;
+  margin-top: 22px;
+}
+
+.pa-bill__header {
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.pa-bill__meta {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-bottom: 6px;
+}
+
+.pa-bill__title {
+  margin: 0;
+  font-size: 16px;
+  font-family: var(--font-display);
+  color: var(--ink-text);
+  letter-spacing: -0.01em;
+}
+
+.pa-bill__subtitle {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--muted-ink);
+}
+
+.pa-bill__body {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--ink-text);
+  font-family: Georgia, 'Times New Roman', serif;
+  margin-bottom: 20px;
+}
+
+.pa-bill__provisions-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-ink);
+  margin-bottom: 10px;
+}
+
+.pa-bill__provisions {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pa-bill__provisions li {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-text);
+}
+
+.pa-fiscal-note {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: rgba(185, 133, 58, 0.08);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 12.5px;
+  color: var(--amber);
+}
+
+.pa-fiscal-note__label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+
+.pa-sim-callout {
+  margin-top: 16px;
+  border: 1px solid rgba(185, 133, 58, 0.4);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  background: rgba(185, 133, 58, 0.06);
+  padding: 16px 18px;
+}
+
+.pa-sim-callout__heading {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+
+.pa-sim-callout__desc {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--muted-ink);
+  line-height: 1.5;
+}
+
+.pa-sim-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius);
+  border: 1px solid rgba(185, 133, 58, 0.2);
+  margin-bottom: 6px;
+  font-size: 12.5px;
+}
+
+.pa-sim-row:last-child {
+  margin-bottom: 0;
+}
+
+.pa-sim-row__value {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pa-narrative-output {
+  padding: 18px 20px;
+  background: var(--paper);
+  border-left: 3px solid var(--plum);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-text);
+}
+
+.pa-theme-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.pa-theme-pill {
+  font-family: var(--font-display);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--plum);
+  color: var(--plum);
+  background: rgba(122, 75, 107, 0.06);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pa-empty-state {
+  margin-top: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  color: var(--muted-ink);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.pa-loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  color: var(--muted-ink);
+  font-size: 13px;
 }

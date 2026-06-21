@@ -1,10 +1,8 @@
 // src/api/client.js
 //
-// Thin fetch wrappers around the FastAPI backend defined in main.py.
-// Every function throws an Error with a readable message on failure —
-// components catch these and render the message directly, since the
-// backend already returns descriptive `detail` strings (e.g. for the
-// LM Studio connection errors on /generate_summary and /generate_persona).
+// Thin fetch wrappers around the FastAPI backend defined in main.py and ai_routes.py.
+// Every function throws an Error with a readable message on failure so components
+// can render the detail string directly without extra parsing.
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
@@ -27,13 +25,17 @@ async function request(path, options = {}) {
       const body = await res.json();
       if (body?.detail) detail = body.detail;
     } catch {
-      // response wasn't JSON — keep the generic message
+      // response was not JSON, keep the generic message
     }
     throw new Error(detail);
   }
 
   return res.json();
 }
+
+// ---------------------------------------------------------------------------
+// Simulation engine
+// ---------------------------------------------------------------------------
 
 export function getHealth() {
   return request('/health');
@@ -43,13 +45,6 @@ export function getBaseline() {
   return request('/baseline');
 }
 
-/**
- * @param {Object} params
- * @param {number} params.n_simulations
- * @param {Object} [params.population_scalers] - e.g. { outpatient_mat_count: 1.2 }
- * @param {Object} [params.overrides] - nested cost overrides, see main.py SimulationRequest
- * @param {number} [params.random_seed]
- */
 export function postSimulate(params) {
   return request('/simulate', {
     method: 'POST',
@@ -57,12 +52,14 @@ export function postSimulate(params) {
   });
 }
 
-/**
- * Pipe a /simulate response directly in — only the four fields below are read.
- * @param {Object} simResult - full response from postSimulate / getBaseline
- */
+// ---------------------------------------------------------------------------
+// Narrative AI endpoints (Phase 1, migrated from LM Studio to Gemini)
+// NOTE: paths updated from /generate_summary to /api/generate-summary to match
+// the new ai_routes.py router prefix introduced in Phase 1.
+// ---------------------------------------------------------------------------
+
 export function postGenerateSummary(simResult) {
-  return request('/generate_summary', {
+  return request('/api/generate-summary', {
     method: 'POST',
     body: JSON.stringify({
       total_cost_p50: simResult.summary.total_cost_p50,
@@ -73,15 +70,41 @@ export function postGenerateSummary(simResult) {
   });
 }
 
-/**
- * @param {Object} params
- * @param {string} params.domain
- * @param {string} params.income_bracket
- * @param {string} [params.intervention_applied]
- */
 export function postGeneratePersona(params) {
-  return request('/generate_persona', {
+  return request('/api/generate-persona', {
     method: 'POST',
     body: JSON.stringify(params),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Policy Architect AI endpoints (Phase 2, ChromaDB RAG + Gemini)
+// ---------------------------------------------------------------------------
+
+export function postSearchPrecedents(query, maxResults = 3) {
+  return request('/api/search-precedents', {
+    method: 'POST',
+    body: JSON.stringify({ query, max_results: maxResults }),
+  });
+}
+
+export function postDraftPolicy(focusArea, ambitionLevel, stateTrackingData) {
+  return request('/api/draft-policy', {
+    method: 'POST',
+    body: JSON.stringify({
+      focus_area: focusArea,
+      ambition_level: ambitionLevel,
+      state_tracking_data: stateTrackingData ?? {},
+    }),
+  });
+}
+
+export function postProjectImpact(simulationOutcomes, communityFocus) {
+  return request('/api/project-impact', {
+    method: 'POST',
+    body: JSON.stringify({
+      simulation_outcomes: simulationOutcomes ?? {},
+      ...(communityFocus ? { community_focus: communityFocus } : {}),
+    }),
   });
 }
