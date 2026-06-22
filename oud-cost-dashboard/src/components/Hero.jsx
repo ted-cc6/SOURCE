@@ -51,7 +51,7 @@ export default function Hero({ result, prevResult, baselineResult, loading }) {
     <header className="hero">
       <div className="hero__inner">
         <div className="eyebrow eyebrow--on-ink">
-          Cost of Doing Nothing &middot; Opioid Epidemic &middot;{' '}
+          Opioid Action Engine &middot;{' '}
           {result?.metadata?.time_range ?? '1999 - 2032'}
         </div>
         <h1 className="hero__title">
@@ -112,49 +112,7 @@ export default function Hero({ result, prevResult, baselineResult, loading }) {
           </div>
         </div>
 
-        {/* Secondary metrics: burn rate and net policy savings */}
-        {total != null && (
-          <div className="flex flex-wrap gap-x-10 gap-y-4 mt-5 pt-4 border-t border-white/10">
-
-            {/* Metric 1: annual burn rate for 2025 */}
-            {annualCost2025 != null && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
-                  Projected 2025 Annual Cost
-                </p>
-                <p className="flex items-center gap-1.5 font-mono text-xl text-gray-100 leading-tight">
-                  <span
-                    className="text-amber-400 text-sm leading-none"
-                    aria-label="increasing"
-                  >
-                    &#x2191;
-                  </span>
-                  {formatCostShort(annualCost2025)}
-                </p>
-              </div>
-            )}
-
-            {/* Metric 2: net savings vs locked baseline */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
-                Net Policy Savings
-              </p>
-              <p
-                className={`font-mono text-xl leading-tight transition-colors duration-300 ${
-                  hasSavings ? 'text-emerald-400' : 'text-gray-500'
-                }`}
-              >
-                {hasSavings ? formatCostShort(netSavings) : '$0'}
-              </p>
-              {hasSavings && (
-                <p className="text-[10px] text-emerald-600 mt-0.5 font-mono">
-                  vs. no-action baseline
-                </p>
-              )}
-            </div>
-
-          </div>
-        )}
+        
       </div>
     </header>
   );

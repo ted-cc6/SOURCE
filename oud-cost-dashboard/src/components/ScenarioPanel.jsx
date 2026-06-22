@@ -107,10 +107,6 @@ export default function ScenarioPanel({ onRun, onBaselineRun, onReset, running, 
           </InfoTip>
         </h2>
 
-        <span className="inline-flex items-center gap-1.5 mt-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
-          {getBadgeCopy(selectedRegion)}
-        </span>
       </div>
 
       {/* Region selector: National default plus all 50 US states */}

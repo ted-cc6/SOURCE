@@ -171,14 +171,22 @@ export default function App() {
               <h2>About This Simulator</h2>
               <p>This simulation represents the total financial and societal cost of Opioid Use Disorder (OUD) if we maintain the status quo and introduce no new policies. The timeline spans from 1999 to 2032, capturing both historical data and future projections to show exactly how these health, criminal justice, and economic costs snowball over time.</p>
               <p>Cumulative cost means this figure is not just an annual budget, it is the total, compounding financial impact aggregated over the entire 1999–2032 period. Because predicting the future involves uncertainty, our forecasting model is a Monte Carlo simulation. We ran this exact 33-year timeline through our computer model 1,000 different times, injecting slight variations each time to account for real-world unpredictability. The median is the middle-ground outcome of all 1,000 simulated futures.</p>
-              <h3>How It Works</h3>
-              <p>[Placeholder: Explain the Monte Carlo simulation approach, what inputs drive it, and how confidence intervals are produced.]</p>
-              <h3>Background</h3>
-              <p>[Placeholder: Context on the OUD crisis — prevalence, economic burden, why a cost-of-inaction framing matters.]</p>
               <h3>Data Sources</h3>
-              <p>[Placeholder: List the datasets, studies, or agencies the cost estimates are drawn from.]</p>
-              <h3>Limitations</h3>
-              <p>[Placeholder: Caveats — synthetic estimates, geographic scope, what the model does not capture.]</p>
+              <p>Epidemiological Foundation:</p>
+              <ul>
+                <li>FDA/SOURCE system dynamics model</li>
+                <li>NSDUH: National Survey on Drug Use and Health</li>
+                <li>NVSS: National Vital Statistics System</li>
+                <li>SAMHSA/TEDS: Treatment Episode Data Set</li>
+              </ul>
+              <p>Cost Calibration:</p>
+              <ul>
+                <li>MEPS: Medical Expenditure Panel Survey</li>
+                <li>BJS: Bureau of Justice Statistics</li>
+                <li>BLS: Bureau of Labor Statistics</li>
+                <li>AFCARS: Adoption and Foster Care Analysis and Reporting System</li>
+                <li>CDC WONDER overdose mortality data</li>
+              </ul>
             </div>
           )}
 
@@ -231,7 +239,7 @@ export default function App() {
       </div>
 
       <footer className="app-footer">
-        Cost of Doing Nothing &middot; OUD Simulator &middot; figures are synthetic
+        Opioid Action Engine &middot; figures are synthetic
         Monte Carlo estimates, not official statistics.
       </footer>
     </div>

@@ -17,7 +17,6 @@ export default function NarrativePanel({ result }) {
             <p><b>Case study generator:</b> Translate the intervention into the lived experience of a single family in your community. </p>
           </InfoTip>
         </h2>
-        <span className="eyebrow">Requires a local LM Studio server</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <ExecutiveSummaryCard result={result} />
@@ -50,7 +49,7 @@ function ExecutiveSummaryCard({ result }) {
     <div className="card">
       <h3 style={{ fontSize: 15, marginBottom: 6 }}>Executive summary</h3>
       <p className="muted" style={{ fontSize: 13, marginTop: 0 }}>
-        Three sentences for a county health director, generated from the current
+        Summary for a county health director, generated from the current
         scenario's totals, top cost domain, and equity breakdown.
       </p>
       <button className="btn btn--primary" onClick={handleGenerate} disabled={loading || !result}>
